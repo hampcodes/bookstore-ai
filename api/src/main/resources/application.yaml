@@ -1,0 +1,76 @@
+server:
+  port: ${SERVER_PORT:8084}
+
+spring:
+  profiles:
+    active: dev              # por defecto dev — en produccion se sobreescribe con SPRING_PROFILES_ACTIVE=prod
+
+  application:
+    name: bookstore-ai
+
+  # --- Base de datos ---
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bookstore_ai_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:adminadmin}
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: false
+    defer-datasource-initialization: true
+
+  # --- Archivos adjuntos ---
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+  # --- Spring AI ---
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.7
+      embedding:
+        options:
+          model: text-embedding-3-small
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        index-type: hnsw
+        distance-type: cosine_distance
+
+# --- JWT ---
+jwt:
+  secret: ${JWT_SECRET:gSiCu1mazM2jzyhD9rLw4ozoGg5UFd657kq8NHDSG6D1I4hfLJVcDJdMWgL4ALJvclObffGtoq4vMR6CRdd0hw==}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+# --- CORS ---
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200}
+
+# --- Uploads ---
+app:
+  upload:
+    dir: ${UPLOAD_DIR:uploads}
+
+# --- Swagger ---
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs

@@ -1,0 +1,19 @@
+# Perfil de producción — sin logs innecesarios
+spring:
+  jpa:
+    show-sql: false            # sin queries SQL en consola
+    properties:
+      hibernate:
+        format_sql: false
+
+  # Swagger deshabilitado en producción
+  springdoc:
+    swagger-ui:
+      enabled: false
+    api-docs:
+      enabled: false
+
+logging:
+  level:
+    root: WARN                          # solo errores y advertencias
+    com.example.bookstoreai: INFO       # info básica de tu app
