@@ -4,10 +4,11 @@ spring:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT:5432}/${DB_NAME}?sslmode=require
 
   jpa:
-    show-sql: false            # sin queries SQL en consola
+    show-sql: false
     properties:
       hibernate:
         format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   # Swagger deshabilitado en producción
   springdoc:
@@ -18,5 +19,7 @@ spring:
 
 logging:
   level:
-    root: WARN                          # solo errores y advertencias
-    com.example.bookstoreai: INFO       # info básica de tu app
+    root: WARN
+    com.example.bookstoreai: INFO
+    org.springframework.boot.autoconfigure.jdbc: DEBUG
+    com.zaxxer.hikari: DEBUG
